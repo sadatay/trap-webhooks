@@ -1,25 +1,12 @@
-# WebhookSignatureVerifier
+# TrapWebhooks
 
-A small Sinatra app to verify the webhook payload signature
+## Caveat
+
+This is just something I'm tinkering with and is not intended for any kind of public consumption as-is.  
 
 ## Description
 
-Travis CI's [webhook notification](https://docs.travis-ci.com/user/notifications/#Webhook-notifications)
-delivers a POST request to the specified endpoint a JSON payload as
-described.
+Sinatra app to log incoming webhooks from various services.  This is based off of [TravisCI's webhook verification example](https://github.com/travis-ci/webhook-signature-verifier), but with some minor modifications.
 
-In addition, the request comes with the custom HTTP header `Signature`
-for the `payload` data.
-
-This small Sinatra app shows how to verify the signature.
-
-## Verifying the signature
-
-1. Pick up the `payload` data from the HTTP request's body.
-1. Obtain the `Signature` header value, and base64-decode it.
-1. Obtain the public key corresponding to the private key that signed
-   the payload. This is available at the `/config` endpoint's
-   `config.notifications.webhook.public_key` on the relevant API server.
-   (e.g., [https://api.travis-ci.org/config](https://api.travis-ci.org/config))
-1. Verify the signature using the public key and SHA1 digest.
-
+- I'm now logging the complete payload out to console (and some other stuff)
+- Although TravisCI webhooks are currently the only kind I'm trying to capture, I may have to do something similar with GitHub webhooks in the near future (and who-knows-what-else in the distant future).  Rather than have a bunch of service-specific repos laying around to capture webhooks, I made the Sinatra app modular and split the route definitions out into service-specific classes.
